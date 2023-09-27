@@ -1,0 +1,4 @@
+export HYPRE_DIR="/opt/homebrew/opt/hypre
+"                export NETCDF_DIR="/opt/homebrew/opt/netcdf-cxx
+"                export HDF5_DIR="/opt/homebrew/opt/hdf5
+"                
