@@ -14,9 +14,9 @@ class ParflowInstaller:
         if package_manager == "brew":
             self.package_manager_automatic_yes_string = ""
         self.installation_directory = installation_directory
-        self.package_dirs = {}
+        self.package_locations = {}
 
-    def install(self):
+    def install_parflow(self):
         original_directory = os.getcwd()
         create_directory(self.installation_directory)
         os.chdir(self.installation_directory)
@@ -28,34 +28,7 @@ class ParflowInstaller:
         packages = ["open-mpi", "hypre", "netcdf", "hdf5", "netcdf-cxx"]
         for package in packages:
             self.install_package(package)
-            self.package_dirs[package] = self.get_package_location(package)
-
-
-    def brew_install_packages(self):
-        os.system(
-            f'''{self.package_manager} update && \
-            {self.package_manager} install {self.package_manager_automatic_yes_string} tzdata && \
-            dpkg-reconfigure --frontend noninteractive tzdata && \
-            {self.package_manager} install {self.package_manager_automatic_yes_string} \
-            build-essential \
-            curl \
-            libcurl4 \
-            git \
-            vim \
-            gfortran \
-            libopenblas-dev \
-            liblapack-dev \
-            openssh-client \
-            openssh-server \
-            openmpi-bin \
-            libopenmpi-dev \
-            python3 \
-            python3-pip \
-            python3-venv \
-            tcl-dev \
-            tk-dev
-            '''
-        )
+            self.package_locations[package] = self.get_package_location(package)
 
     def capture_command_output(self, command):
         tmp_file_location = "very_temporary_file"
@@ -74,7 +47,9 @@ class ParflowInstaller:
             return self.get_homebrew_package_location(package)
 
     def install_package(self, package):
-        if self.package_manager == "brew":
+        if package == "hdf5":
+            self.install_hdf5()
+        elif self.package_manager == "brew":
             self.brew_install_package(package)
 
     def brew_install_package(self, package):
@@ -86,12 +61,23 @@ class ParflowInstaller:
             '''
         )
 
+    def install_hdf5(self):
+        os.chdir("/Users/ben/Documents/tools/parflow_dependencies")
+        create_directory("hdf5-src")
+        os.chdir("hdf5-src")
+        os.system("curl -L $HDF5_URL | tar --strip-components=1 -xzv && \
+                    CC=mpicc ./configure \
+                    --prefix=$HDF5_DIR \
+                    --enable-parallel && \
+                    make && make install"
+                  )
+
     def generate_addition_to_bashrc(self):
         with open("add_me_to_your_user_profile.txt", "w") as file:
             file.write(
-                f'export HYPRE_DIR="{self.package_dirs["hypre"]}"\
-                export NETCDF_DIR="{self.package_dirs["netcdf-cxx"]}"\
-                export HDF5_DIR="{self.package_dirs["hdf5"]}"\
+                f'export HYPRE_DIR="{self.package_locations["hypre"]}"\
+                export NETCDF_DIR="{self.package_locations["netcdf-cxx"]}"\
+                export HDF5_DIR="{self.package_locations["hdf5"]}"\
                 '
                 )
 
@@ -121,7 +107,7 @@ def main():
     USER_HOME_DIRECTORY = "Users/ben"
     INSTALLATION_DIRECTORY = USER_HOME_DIRECTORY + "/parflow_dependencies"
     parflow_installer = ParflowInstaller(package_manager=PACKAGE_MANAGER, installation_directory=INSTALLATION_DIRECTORY)
-    parflow_installer.install()
+    parflow_installer.install_parflow()
     # generate_addition_to_bashrc(HYPRE_DIR, NETCDF_DIR, H)
    
 
