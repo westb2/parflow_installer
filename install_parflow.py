@@ -16,7 +16,7 @@ class ParflowInstaller:
         self.installation_directory = installation_directory
         self.package_dirs = {}
 
-    def install(self):
+    def install_parflow(self):
         original_directory = os.getcwd()
         create_directory(self.installation_directory)
         os.chdir(self.installation_directory)
@@ -95,6 +95,9 @@ class ParflowInstaller:
                 '
                 )
 
+    def detect_package_manager(self):
+        package_managers=["brew", "apt-get", "yum"]
+        for package_manager in package_managers
     def cmake_options():
         '''
         -D CMAKE_BUILD_TYPE=Release   \
@@ -121,7 +124,7 @@ def main():
     USER_HOME_DIRECTORY = "Users/ben"
     INSTALLATION_DIRECTORY = USER_HOME_DIRECTORY + "/parflow_dependencies"
     parflow_installer = ParflowInstaller(package_manager=PACKAGE_MANAGER, installation_directory=INSTALLATION_DIRECTORY)
-    parflow_installer.install()
+    parflow_installer.install_parflow()
     # generate_addition_to_bashrc(HYPRE_DIR, NETCDF_DIR, H)
    
 
