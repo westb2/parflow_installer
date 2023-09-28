@@ -25,10 +25,21 @@ class ParflowInstaller:
         self.generate_addition_to_bashrc()
 
     def install_requirements(self):
-        packages = ["open-mpi", "hypre", "netcdf", "hdf5", "netcdf-cxx"]
+        packages = ["open-mpi", "netcdf", "hdf5", "netcdf-cxx"]
         for package in packages:
             self.install_package(package)
             self.package_locations[package] = self.get_package_location(package)
+        self.install_hypre()
+
+    def install_hypre(self):
+        HYPRE_DIR="hypre-src"
+        os.chdir(self.installation_directory)
+        create_directory(HYPRE_DIR)
+        os.chdir(HYPRE_DIR)
+        # os.system(f"git clone https://github.com/hypre-space/hypre.git --single-branch")
+        os.chdir("hypre/src")
+        os.system(f"make && make install && ./configure --prefix={self.installation_directory}/{HYPRE_DIR} CC=mpicc")
+        self.package_locations["hypre"] = self.installation_directory + "/" + HYPRE_DIR
 
     def capture_command_output(self, command):
         tmp_file_location = "very_temporary_file"
@@ -47,9 +58,7 @@ class ParflowInstaller:
             return self.get_homebrew_package_location(package)
 
     def install_package(self, package):
-        if package == "hdf5":
-            self.install_hdf5()
-        elif self.package_manager == "brew":
+        if self.package_manager == "brew":
             self.brew_install_package(package)
 
     def brew_install_package(self, package):
@@ -61,24 +70,29 @@ class ParflowInstaller:
             '''
         )
 
+
     def install_hdf5(self):
-        os.chdir("/Users/ben/Documents/tools/parflow_dependencies")
-        create_directory("hdf5-src")
-        os.chdir("hdf5-src")
-        os.system("curl -L $HDF5_URL | tar --strip-components=1 -xzv && \
+        HDF5_URL="https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/src/hdf5-1.12.0.tar.gz"
+        HDF5_DIR="hdf5-src"
+        os.chdir(self.installation_directory)
+        create_directory(HDF5_DIR)
+        os.chdir(HDF5_DIR)
+        os.system(f"curl -L {HDF5_URL} | tar --strip-components=1 -xzv && \
                     CC=mpicc ./configure \
-                    --prefix=$HDF5_DIR \
+                    --prefix={self.installation_directory}/{HDF5_DIR} \
                     --enable-parallel && \
                     make && make install"
                   )
+        self.package_locations["hdf5"] = self.installation_directory + "/hdf5"
 
     def generate_addition_to_bashrc(self):
         with open("add_me_to_your_user_profile.txt", "w") as file:
             file.write(
-                f'export HYPRE_DIR="{self.package_locations["hypre"]}"\
+                f'''
                 export NETCDF_DIR="{self.package_locations["netcdf-cxx"]}"\
+                export HYPRE_DIR="{self.package_locations["hypre"]}"\
                 export HDF5_DIR="{self.package_locations["hdf5"]}"\
-                '
+                '''
                 )
 
     # def detect_package_manager(self):

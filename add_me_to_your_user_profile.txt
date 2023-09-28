@@ -1,4 +1,4 @@
-export HYPRE_DIR="/opt/homebrew/opt/hypre
-"                export NETCDF_DIR="/opt/homebrew/opt/netcdf-cxx
-"                export HDF5_DIR="/opt/homebrew/opt/hdf5
+
+                export NETCDF_DIR="/opt/homebrew/opt/netcdf-cxx
+"                export HYPRE_DIR="/Users/ben/parflow_build/hypre-src"                export HDF5_DIR="/opt/homebrew/opt/hdf5
 "                
