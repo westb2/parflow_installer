@@ -118,9 +118,7 @@ class ParflowInstaller:
 
 
 def main():
-    
     PACKAGE_MANAGER = "brew"
-    package_manager_automatic_yes_string = ""
     USER_HOME_DIRECTORY = "Users/ben"
     INSTALLATION_DIRECTORY = USER_HOME_DIRECTORY + "/parflow_dependencies"
     parflow_installer = ParflowInstaller(package_manager=PACKAGE_MANAGER, installation_directory=INSTALLATION_DIRECTORY)
