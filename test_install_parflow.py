@@ -1,8 +1,7 @@
-from install_parflow import ParflowInstaller
+from ParflowInstaller import ParflowInstaller
 
-# block one 
+# block one. Reminder to show go to definition, find references
 PACKAGE_MANAGER = "brew"
-package_manager_automatic_yes_string = ""
 USER_HOME_DIRECTORY = "Users/ben"
 INSTALLATION_DIRECTORY = USER_HOME_DIRECTORY + "/parflow_dependencies"
 parflow_installer = ParflowInstaller(package_manager=PACKAGE_MANAGER, installation_directory=INSTALLATION_DIRECTORY)

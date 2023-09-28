@@ -81,38 +81,8 @@ class ParflowInstaller:
                 '
                 )
 
-    def detect_package_manager(self):
-        package_managers=["brew", "apt-get", "yum"]
-        for package_manager in package_managers
-    def cmake_options():
-        '''
-        -D CMAKE_BUILD_TYPE=Release   \
-        -D HDF5_ROOT=$HDF5_DIR         \
-        -D PARFLOW_ENABLE_HDF5=TRUE     \
-        -D HYPRE_ROOT=$HYPRE_DIR         \
-        -D PARFLOW_ENABLE_HYPRE=TRUE      \
-        -D PARFLOW_HAVE_CLM=TRUE             \
-        -D PARFLOW_ENABLE_PYTHON=TRUE         \
-        -D PARFLOW_ENABLE_TIMING=TRUE          \
-        -D PARFLOW_ENABLE_PROFILING=TRUE          \
-        -D PARFLOW_AMPS_LAYER=mpi1              \
-        -D PARFLOW_AMPS_SEQUENTIAL_IO=TRUE       \
-        -D PARFLOW_ENABLE_NETCDF=TRUE             \
-        -D NETCDF_DIR=$NETCDF_DIR                  \
-        -D CURL_LIBRARY=/usr/bin/curl
-        '''
+    # def detect_package_manager(self):
+    #     package_managers=["brew", "apt-get", "yum"]
+    #     for package_manager in package_managers
 
 
-def main():
-    PACKAGE_MANAGER = "brew"
-    USER_HOME_DIRECTORY = "Users/ben"
-    INSTALLATION_DIRECTORY = USER_HOME_DIRECTORY + "/parflow_dependencies"
-    parflow_installer = ParflowInstaller(package_manager=PACKAGE_MANAGER, installation_directory=INSTALLATION_DIRECTORY)
-    parflow_installer.install_parflow()
-    # generate_addition_to_bashrc(HYPRE_DIR, NETCDF_DIR, H)
-   
-
-
-
-if __name__ == "__main__":
-    main()
