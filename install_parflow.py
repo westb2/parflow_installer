@@ -81,6 +81,9 @@ class ParflowInstaller:
                 '
                 )
 
+    def detect_package_manager(self):
+        package_managers=["brew", "apt-get", "yum"]
+        for package_manager in package_managers
     def cmake_options():
         '''
         -D CMAKE_BUILD_TYPE=Release   \
@@ -101,9 +104,7 @@ class ParflowInstaller:
 
 
 def main():
-    
     PACKAGE_MANAGER = "brew"
-    package_manager_automatic_yes_string = ""
     USER_HOME_DIRECTORY = "Users/ben"
     INSTALLATION_DIRECTORY = USER_HOME_DIRECTORY + "/parflow_dependencies"
     parflow_installer = ParflowInstaller(package_manager=PACKAGE_MANAGER, installation_directory=INSTALLATION_DIRECTORY)
