@@ -1,6 +1,6 @@
 import os
 
-def capture_terminal_output(self, command):
+def run_and_capture_terminal_output(command):
     tmp_file_location = "very_temporary_file"
     os.system(f"{command} > {tmp_file_location}")
     output = ""

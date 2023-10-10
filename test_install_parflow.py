@@ -4,12 +4,11 @@ from ParflowInstaller import ParflowInstaller
 PACKAGE_MANAGER = "brew"
 USER_HOME_DIRECTORY = "/Users/ben"
 INSTALLATION_DIRECTORY = USER_HOME_DIRECTORY + "/parflow_build"
-parflow_installer = ParflowInstaller(
-    package_manager=PACKAGE_MANAGER, 
-    installation_directory=INSTALLATION_DIRECTORY
-    )
 
-parflow_installer.install()
+parflow_installer = ParflowInstaller()
+
+# parflow_installer.install_requirements()
+parflow_installer.install_parflow()
 
 #block 3
 print("bye\n")
