@@ -1,4 +1,4 @@
 Set -D
 PARFLOW_PYTHON_VIRTUAL_ENV=TRUE
 
-Get archived version of netcdf and hdf5
+Get archived version of netcdf and hdf5, see main dockerfile
