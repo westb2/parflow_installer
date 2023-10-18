@@ -2,3 +2,9 @@ Set -D
 PARFLOW_PYTHON_VIRTUAL_ENV=TRUE
 
 Get archived version of netcdf and hdf5, see main dockerfile
+
+Switch to parflow_env file for setting variables
+
+add support for versioning and pulling different branches
+
+export script to build parflow from local version
