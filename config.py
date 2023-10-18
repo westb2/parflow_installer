@@ -24,6 +24,8 @@ REQUIRED_PACKAGES = [
 ]
 PACKAGE_MANAGER = "AUTO_CONFIGURED"
 
+
+LOCAL_PARFLOW_SRC = "/Users/ben/Documents/Github/parflow"
 PARFLOW_SRC_DIR="parflow_src"
 PARFLOW_URL = "https://github.com/parflow/parflow.git"
 PARFLOW_BUILD_DIR="cmake_build"

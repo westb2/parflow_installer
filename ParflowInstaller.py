@@ -12,12 +12,16 @@ class ParflowInstaller:
         self.system_package_manager = SystemPackageManager(config.PACKAGE_MANAGER)
         self.package_locations = {}
 
-    def install_parflow(self):
+    def install_parflow(self, use_local_source_code=False):
         create_directory(config.INSTALLATION_ROOT)
         os.chdir(config.INSTALLATION_ROOT)
         self.set_environment_variables()
-        self.download_parflow_source()
-        self.cmake()
+        if use_local_source_code:
+            self.cmake(parflow_source=config.LOCAL_PARFLOW_SRC)
+        else:
+            self.download_parflow_source()
+            self.cmake(parflow_source=f"{config.INSTALLATION_ROOT}/{config.PARFLOW_SRC_DIR}")
+        self.install_pftools()
         self.write_env_file()
         print("INSTALLATION COMPLETE!\n")
         print("Please add the following lines to your bashrc (or other profile) file\n\n")
@@ -35,11 +39,17 @@ class ParflowInstaller:
         os.system(f"git clone -b master --single-branch {config.PARFLOW_URL} {config.PARFLOW_SRC_DIR}")
     
 
-    def cmake(self):
+    def install_pftools(self):
+        run_and_capture_terminal_output(
+            f"python3 -m pip install \
+            {config.INSTALLATION_ROOT}/{config.PARFLOW_BUILD_DIR}/pftools/python"
+        )
+
+    def cmake(self, parflow_source):
         curl_location = shutil.which("curl")
         create_directory(config.PARFLOW_SRC_DIR)
-        run_and_capture_terminal_output(
-            f"cmake -S {config.INSTALLATION_ROOT}/{config.PARFLOW_SRC_DIR}\
+        os.system(
+            f"cmake -S {parflow_source}\
             -B {config.INSTALLATION_ROOT}/{config.PARFLOW_BUILD_DIR}\
             -D CMAKE_BUILD_TYPE=Release\
             -D PARFLOW_ENABLE_HDF5=TRUE\
@@ -58,12 +68,12 @@ class ParflowInstaller:
             -D SILO_ROOT={config.INSTALLATION_ROOT}/{config.SILO_DIR}\
             -D PARFLOW_ENABLE_NETCDF=TRUE\
             -D NETCDF_DIR={config.INSTALLATION_ROOT}/{config.NETCDF_DIR} \
-            -D PARFLOW_PYTHON_VIRTUAL_ENV=TRUE\
             -DCMAKE_POLICY_DEFAULT_CMP0144=NEW \
             && cmake --build {config.INSTALLATION_ROOT}/{config.PARFLOW_BUILD_DIR}\
             && cmake --install {config.INSTALLATION_ROOT}/{config.PARFLOW_BUILD_DIR} --prefix {config.INSTALLATION_ROOT}/{config.PARFLOW_INSTALLATION_DIR}\
             "
         )
+        # -D PARFLOW_PYTHON_VIRTUAL_ENV=TRUE\
 
 
     def set_environment_variables(self):
