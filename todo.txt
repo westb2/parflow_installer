@@ -8,3 +8,5 @@ Switch to parflow_env file for setting variables
 add support for versioning and pulling different branches
 
 export script to build parflow from local version
+
+export TMPDIR=/tmp in export script to fix ompi issue

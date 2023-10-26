@@ -12,7 +12,7 @@ class ParflowInstaller:
         self.system_package_manager = SystemPackageManager(config.PACKAGE_MANAGER)
         self.package_locations = {}
 
-    def install_parflow(self, use_local_source_code=False):
+    def install_parflow(self, use_local_source_code=False, install_pftools=True):
         create_directory(config.INSTALLATION_ROOT)
         os.chdir(config.INSTALLATION_ROOT)
         self.set_environment_variables()
@@ -21,7 +21,8 @@ class ParflowInstaller:
         else:
             self.download_parflow_source()
             self.cmake(parflow_source=f"{config.INSTALLATION_ROOT}/{config.PARFLOW_SRC_DIR}")
-        self.install_pftools()
+        # if install_pftools: 
+        #     self.install_pftools()
         self.write_env_file()
         print("INSTALLATION COMPLETE!\n")
         print("Please add the following lines to your bashrc (or other profile) file\n\n")
